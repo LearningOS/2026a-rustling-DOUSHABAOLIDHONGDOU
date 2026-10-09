@@ -5,7 +5,6 @@
 // Execute `rustlings hint strings1` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
 
 fn main() {
     let answer = current_favorite_color();
@@ -13,5 +12,6 @@ fn main() {
 }
 
 fn current_favorite_color() -> String {
-    "blue"
+    "blue".to_string() // 这里的返回值是一个字符串类型，所以需要将字符串字面量转换为String类型
+    //"blue" 仅仅是一个字符串字面量
 }

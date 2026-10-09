@@ -7,22 +7,25 @@
 // Execute `rustlings hint errors3` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
 
 use std::num::ParseIntError;
 
-fn main() {
+fn main() -> Result<(), ParseIntError> {
     let mut tokens = 100;
     let pretend_user_input = "8";
 
     let cost = total_cost(pretend_user_input)?;
-
+    // ？这个的用法是处理Result类型的错误，如果没有问题就是执行，
+    // 如果出现了问题就到return Err(e)的地方去处理错误，返回一个错误值
+    // 给当前的函数也就是main函数，main函数的返回值是Result类型，所以可以返回一个错误值
+    // 因此修改main的返回修改值
     if cost > tokens {
         println!("You can't afford that many!");
     } else {
         tokens -= cost;
         println!("You now have {} tokens.", tokens);
     }
+    Ok(())
 }
 
 pub fn total_cost(item_quantity: &str) -> Result<i32, ParseIntError> {

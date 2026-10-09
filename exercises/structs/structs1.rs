@@ -3,27 +3,32 @@
 // Address all the TODOs to make the tests pass!
 //
 // Execute `rustlings hint structs1` or use the `hint` watch subcommand for a
-// hint.
+//hint.
 
-// I AM NOT DONE
-
+// 具名结构体
 struct ColorClassicStruct {
-    // TODO: Something goes here
+    red: u8,
+    green: u8,
+    blue: u8,
 }
 
-struct ColorTupleStruct(/* TODO: Something goes here */);
+// 元组结构体
+struct ColorTupleStruct(u8, u8, u8);
 
 #[derive(Debug)]
 struct UnitLikeStruct;
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+#[cfg(test)] //只在测试时才会编译这个模块，正常构建时排除
+mod tests { //一个tests 的模块(Rust 里测试的惯例写法)
+    use super::*; //把上面定义的结构体导入进来，不然这里无法索引
 
-    #[test]
+    #[test] // 告诉cargo这是一个测试函数
     fn classic_c_structs() {
-        // TODO: Instantiate a classic c struct!
-        // let green =
+        let green = ColorClassicStruct{
+            red:0,
+            green:255,
+            blue:0,
+        };
 
         assert_eq!(green.red, 0);
         assert_eq!(green.green, 255);
@@ -32,8 +37,7 @@ mod tests {
 
     #[test]
     fn tuple_structs() {
-        // TODO: Instantiate a tuple struct!
-        // let green =
+        let green = ColorTupleStruct(0,255,0);
 
         assert_eq!(green.0, 0);
         assert_eq!(green.1, 255);
@@ -41,9 +45,9 @@ mod tests {
     }
 
     #[test]
+
     fn unit_structs() {
-        // TODO: Instantiate a unit-like struct!
-        // let unit_like_struct =
+        let unit_like_struct = UnitLikeStruct;
         let message = format!("{:?}s are fun!", unit_like_struct);
 
         assert_eq!(message, "UnitLikeStructs are fun!");

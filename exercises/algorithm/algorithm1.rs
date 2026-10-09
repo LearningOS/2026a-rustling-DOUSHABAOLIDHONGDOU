@@ -2,8 +2,6 @@
 	single linked list merge
 	This problem requires you to merge two ordered singly linked lists into one ordered singly linked list
 */
-// I AM NOT DONE
-
 use std::fmt::{self, Display, Formatter};
 use std::ptr::NonNull;
 use std::vec::*;
@@ -69,14 +67,45 @@ impl<T> LinkedList<T> {
             },
         }
     }
-	pub fn merge(list_a:LinkedList<T>,list_b:LinkedList<T>) -> Self
+	pub fn merge(list_a: LinkedList<T>, list_b: LinkedList<T>) -> Self
+	where
+		T: PartialOrd,
 	{
-		//TODO
-		Self {
-            length: 0,
-            start: None,
-            end: None,
-        }
+		let mut result = LinkedList::new();
+		let mut a = list_a.start;
+		let mut b = list_b.start;
+
+		while a.is_some() && b.is_some() {
+			let a_ptr = a.unwrap();
+			let b_ptr = b.unwrap();
+			let take_a = unsafe { &(*a_ptr.as_ptr()).val } <= unsafe { &(*b_ptr.as_ptr()).val };
+			if take_a {
+				a = unsafe { (*a_ptr.as_ptr()).next };
+				result.push_node(a_ptr);
+			} else {
+				b = unsafe { (*b_ptr.as_ptr()).next };
+				result.push_node(b_ptr);
+			}
+		}
+
+		let mut remaining = if a.is_some() { a } else { b };
+		while let Some(node) = remaining {
+			remaining = unsafe { (*node.as_ptr()).next };
+			result.push_node(node);
+		}
+
+		result
+	}
+
+	// Append an already-allocated node to the tail of this list.
+	fn push_node(&mut self, node: NonNull<Node<T>>) {
+		unsafe { (*node.as_ptr()).next = None };
+		match self.end {
+			None => self.start = Some(node),
+			Some(end_ptr) => unsafe { (*end_ptr.as_ptr()).next = Some(node) },
+		}
+		self.end = Some(node);
+		self.length += 1;
 	}
 }
 
